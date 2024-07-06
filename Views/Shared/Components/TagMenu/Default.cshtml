@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Tag>
+@{
+}
+<div class="card kategori text-center mt-4">
+            
+    <div class="card-header  text-dark">
+        <h5 class="card-title">Kategori</h5>
+    </div>
+    <ul class="d-inline-flex p-3 flex-wrap">
+            @foreach (var tag in Model)
+            {
+                <li class="list-inline-item pb-2">
+                    <a asp-controller="Posts" asp-action="Index" asp-route-url="@tag.Url" class="btn btn-sm btn-outline-@tag.Color">@tag.Text</a>
+                </li>
+            }
+
+    </ul>
+
+</div> 

@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Post>
+@{
+}
+    <div class="card kategori text-center mt-5">
+    <div class="card-header border-0 p-0 pt-1 text-dark ">
+            <h5 class="card-title">Son Yüklenenler<i class="bi bi-fire"></i> </h5>
+        </div>
+        <div class="card-body mt-2">
+        <ul class="d-flex flex-wrap gap-2 ">
+                @foreach (var post in Model)
+                {
+                <li class="list-inline-item mx-auto"><a asp-action="Details" asp-controller="Posts" asp-route-url="@post.Url" class="btn btn-sm btn-outline-dark border-0 border-bottom" style="width: 220px">@post.Title</a></li>
+                }
+                
+            </ul>
+        </div>
+    </div>

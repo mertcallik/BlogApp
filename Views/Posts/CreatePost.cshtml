@@ -1,0 +1,90 @@
+﻿@model PostCreateViewModel;
+@{
+    Layout = "_Layout";
+}
+@section Style
+{
+
+
+    body{background: rgb(64,115,158,0.99);
+    background: linear-gradient(90deg, rgba(220, 221, 225,1.0) 50%, rgba(64,115,158,0.99) 50%);}
+    .form{
+    -webkit-box-shadow:0px 0px 211px 102px rgba(3,83,180,1);
+    -moz-box-shadow: 0px 0px 211px 102px rgba(3,83,180,1);
+    box-shadow: 0px 0px 211px 102px rgba(3,83,180,1);
+    }
+    input{height:35px;
+    }
+    label{height:20px;}
+
+
+}
+
+<form method="post" asp-action="Create" enctype="multipart/form-data">
+
+<div class="container mt-5 pb-3">
+    <div class="row d-flex align-items-center">
+
+
+
+        <div class="col-xl-8" >
+            <div class="bg-light p-3 rounded-3 border-1 w-100">
+                <div class="mb-2">
+                    <label class="form-label" asp-for="Title"></label>
+                    <input class="form-control" asp-for="Title" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label" asp-for="Description"></label>
+                    <input class="form-control" asp-for="Description"/>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label" asp-for="Content"></label>
+                    <textarea class="form-control" asp-for="Content" id="Content"></textarea>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label" asp-for="Image">Kapak Resmi</label>
+                    <input class="form-control" type="file" name="file"/>
+                </div>
+
+                <div class="mb-3 text-center">
+                    <button class="btn btn-primary" type="submit">Postu Yayınla</button>
+                </div>
+
+                
+                <div class="text-center text-danger" asp-validation-summary="All"></div>
+            </div>
+
+
+        </div>
+        
+        <div class="col-xl-4">
+            <div class="bg-light p-3 rounded">
+                @foreach (var tag in Model.Tags)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="@tag.Value" name="tagIds" id="tag_@tag.Text">
+                        <label class="form-check-label" for="tag_@tag.Text">
+                            @tag.Text
+                        </label>
+                    </div>
+                }
+
+            </div>
+        </div>
+       
+
+    </div>
+</div>
+</form>
+@section Scripts
+{
+    <script src="/lib/tinymce/tinymce.min.js"></script>
+
+    <script>
+        tinymce.init({
+            selector: '#Content',
+        });
+
+        </script>
+
+}

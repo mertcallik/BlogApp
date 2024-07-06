@@ -1,0 +1,88 @@
+﻿@model UserEditModel;
+@{
+    Layout = "_Layout";
+    var a = Html.Raw(ViewBag.success);
+}
+@section Style
+{
+    input {
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Resim için gölge */
+    img {
+    box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.1);
+    }
+    nav{
+    visibility: hidden;
+    }
+    footer{
+    visibility: hidden;
+    }
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 mx-auto">
+            <form asp-action="EditProfile" asp-controller="Users" enctype="multipart/form-data">
+                <div>
+                    <input type="hidden" asp-for="Id"/>
+                    <input type="hidden" asp-for="Image"/>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="mb-3">
+                            <label for="Name" class="form-label">Ad</label>
+                            <input class="form-control" id="Name" asp-for="Name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="SurName" class="form-label">Soyad</label>
+                            <input class="form-control" id="SurName" asp-for="SurName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="UserName" class="form-label">username</label>
+                            <input class="form-control" id="UserName" asp-for="UserName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="Email" class="form-label">Email</label>
+                            <input class="form-control" id="Email" asp-for="Email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="Password" class="form-label">Password</label>
+                            <input class="form-control" id="Password" asp-for="Password">
+                        </div>
+                        <div class="mb-3">
+                            <label for="PasswordConfirm" class="form-label">PasswordConfirm</label>
+                            <input class="form-control" id="PasswordConfirm" asp-for="PasswordConfirm">
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" asp-action="EditProfile" asp-controller="Users" class="btn btn-primary">Değişiklikleri Kaydet</button>
+                        </div>
+                    </div>
+
+                    <div class="col-4 d-block">
+                        <div class="mb-3">
+                            <div class="text-center"><img src="/img/@Model.Image" class="rounded-circle img-fluid"/> </div>
+                        </div>
+                        <div class="mb-3">
+                            <input class="form-control" type="file" name="File" />
+                        </div>
+                    </div>
+                </div>
+                <div style="color:red" asp-validation-summary="All"></div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

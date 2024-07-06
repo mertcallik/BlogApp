@@ -1,0 +1,254 @@
+﻿@model Post;
+@{
+    Layout = "_Layout";
+}
+
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="bg-white p-4">
+            <h1 class="display-5 fw-light text-center mb-4">@Model.Title</h1>
+            <div>
+                @foreach (var tag in Model.Tags)
+                {
+                    <a asp-controller="Posts" asp-action="Index" asp-route-url="@tag.Url" class="badge bg-@tag.Color bg-opacity-10 text-@tag.Color mb-2 fw-bold">@tag.Text</a>
+                }
+            </div>
+
+            <div class="d-flex">
+                <img src="/img/@Model.Image" class="rounded-3 img-thumbnail" style="width:100%" />
+            </div>
+            
+            <div class="row mt-4">
+                <div class="d-flex justify-content-end">
+                    <a class="d-flex gap-2 align-items-center" asp-route-username="@Model.User.UserName" asp-action="Profile" asp-controller="Users">
+                        <i class="bi bi-person-check"></i>
+                        @Model.User.UserName
+                        <img style="width: 50px" class="img-fluid  rounded p-1 border" src="/img/@Model.User.Image" />
+
+                    </a>
+                </div>
+                <div class="col-12">
+                    <div class="d-flex justify-content-start align-items-center">
+                        <div>
+                            Yayınlanma Tarihi:@Model.PublishedOn.ToString("d") <i class="bi bi-calendar-minus"></i>
+                        </div>
+
+                    </div>
+                    <hr />
+                </div>
+
+            </div>
+            <div>@Html.Raw(@Model.Content)</div>
+
+        </div>
+        <section style="background-color: #f7f6f6;">
+            <div class="container-fluid text-body">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-12 col-lg-12 col-xl-12">
+                        <div class="d-flex justify-content-between align-items-center my-5">
+                            <h4 class="text-body mb-0"><span id="yorumadet">@Model.Comments.Count()</span> Adet Yorum</h4>
+                        </div>
+                        <div id="commentss">
+
+
+                            @foreach (var comment in Model.Comments)
+                            {
+                                <div class="card border-0 mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex  align-items-center">
+
+                                            <img class="rounded-circle avatar shadow-1-strong me-3 float-start img-fluid"
+                                                 src="/img/@comment.User.Image" alt="avatar" width="60"
+                                                 height="50"/>
+                                            <div class="w-100">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h6 class="text-primary fw-bold mb-0">
+
+                                                        <a asp-action="Profile" asp-route-username="@comment.User.UserName" asp-controller="Users">
+                                                            @comment.User.UserName
+
+                                                        </a>
+                                                        <span class="text-body ms-2">@comment.CommentText</span>
+                                                    </h6>
+                                                    <small class="mb-0">@comment.PublishedOn.Date.ToString("D")</small>
+                                                </div>
+
+
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+                                    @if (User.Identity!.IsAuthenticated)
+                                    {
+                                        <div id="replyform" class="mx-2 ">
+                                            <form asp-action="Reply" method="post">
+                                                <input type="hidden" name="commentId" value="@comment.CommentId" />
+                                                <input type="hidden" name="url" value="@Model.Url" />
+                                                <div class="mb-1">
+                                                    <label class="form-label">Yanıtla</label>
+                                                    <input class="border-1 rounded-2 mx-3" name="Text" style="width: 75%; height: 40px;" />
+                                                    <button class="btn btn-sm btn-outline-primary" type="submit">Cevapla</button>
+
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                        <div>
+                                            <a class="btn btn-sm" id="show-replies">
+                                                <p>@comment.Replies.Count Adet yorum <i class="bi bi-arrow-down-circle"></i></p>
+                                            </a>
+                                        </div>
+
+
+                                    }
+                                    <div class="" id="replies-container">
+
+                                        <hr />
+                                        <div class="d-block justify-content-start my-1  ">
+
+
+                                            @foreach (var reply in comment.Replies)
+                                            {
+
+                                                <div class="card-body border-bottom ">
+                                                    <div class="d-flex " style="align-items: center">
+                                                        <i class="bi bi-text-indent-left mx-3"></i>
+                                                        <img class="rounded-circle   me-3 float-start img-fluid"
+                                                             src="/img/@reply.User.Image" alt="avatar" width="60"
+                                                             height="50"/>
+                                                        <div class="w-100">
+                                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                                <h6 class="text-primary fw-bold mb-0">
+                                                                    <a asp-action="Profile" asp-controller="Users" asp-route-username="@reply.User.UserName">
+                                                                        @reply.User.UserName
+                                                                    </a>
+                                                                    <span class="text-body ms-2">@reply.Text</span>
+                                                                </h6>
+                                                                <small class="mb-0">@comment.PublishedOn.Date.ToString("D")</small>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            }
+
+                                        </div>
+
+
+
+
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container">
+            <hr class="my-4" />
+
+            @if (User.Identity!.IsAuthenticated)
+            {
+                <h4 class="mb-3">Yorum Ekle</h4>
+
+                <form method="post" asp-action="AddComment">
+                    <input type="hidden" name="postId" id="postId" value="@Model.PostId" />
+                    @*                 <input type="hidden" name="url" value="@Model.Url"/>
+                *@      <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="Text" class="form-label">Yorum</label>
+                            <textarea class="form-control" name="Text" id="Text" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <button id="btnYorumKayit" type="submit" class="btn btn-sm btn-outline-primary">Yorum Yap</button>
+                        </div>
+                    </div>
+                </form>
+            }
+
+            else
+            {
+                <a class="fw-bold" asp-controller="Users" asp-action="Login">
+                    <h4 class="mb-3">Yorum Yapmak için Giriş Yapmalısınız</h4>
+
+                </a>
+            }
+
+        </div>
+
+    </div>
+    <div class="col-lg-3 d-flex justify-content-start">
+        <div>
+            <vc:latest-posts-menu></vc:latest-posts-menu>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnYorumKayit").click(function (e) {
+                e.preventDefault(); // Formun varsayılan gönderimini engelleyin
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("AddComment")',
+                    dataType: 'json',
+                    data: {
+                        postId: $('#postId').val(),
+                        userName: $('#userName').val(),
+                        Text: $('#Text').val()
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        // Yorumu yorumlar listesine ekleyin
+                        $('#commentss').append(`
+                                                                                   <div class="card mb-3">
+                                                                                    <div class="card-body">
+                                                                                        <div class="d-flex flex-start">
+                                                                                            <img class="rounded-circle avatar shadow-1-strong me-3 float-start"
+                                                                                                 src="/img/${data.avatar}" alt="avatar" width="60"
+                                                                                                 height="50" />
+                                                                                            <div class="w-100">
+                                                                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                                                                    <h6 class="text-primary fw-bold mb-0">
+                                                                                                        ${data.userName}
+                                                                                                        <span class="text-body ms-2">${data.text}</span>
+                                                                                                    </h6>
+                                                                                                                            <small class="mb-0">1 sec ago</small>
+                                                                                                </div>
+                                                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                                                    <p class="small mb-0" style="color: #aaa;">
+                                                                                                        <a href="#!" class="link-grey">Remove</a> •
+                                                                                                        <a href="" class="link-grey">Reply</a>
+                                                                                                    </p>
+
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>`);
+                        $('#Text').val('');
+                        // Yorum sayısını güncelleyin
+                        var adet = parseInt($('#yorumadet').text()) + 1;
+                        $('#yorumadet').text(adet);
+                    }
+                });
+            });
+        });
+    </script>
+}
+

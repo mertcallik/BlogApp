@@ -1,0 +1,131 @@
+﻿@model User;
+@{
+    Layout = "_Layout";
+}
+
+<div class="container mt-5 pt-2">
+
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="card rounded shadow">
+                <div class="card-body d-flex justify-content-center">
+                    <img class="rounded-circle w-25" src="/img/@Model.Image" />
+                </div>
+                <div class="text-center">
+                    <div class="card-title">@Model.Name @Model.UserName</div>
+                    <div class="card-body">
+                        <div class="bg-info opacity-60 my-2 py-2">
+                            <a href="tel:911" alt="Call 911" class="text-decoration-none  text-dark">
+                                <i class="bi bi-telephone-plus mx-1"></i>@Model.Name'i ara
+                            </a>
+                        </div>
+
+                        <div>
+                            <p>
+                                <a class="text-decoration-none text-dark" href="mailto:@Model.Email">
+                                    <i class="bi bi-envelope-at-fill"></i> @Model.Email
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div class="card shadow rounded my-5 py-2">
+
+                <div class="text-center">
+                    <div class="card-title">@Model.UserName hakkında</div>
+                    <div class="card-body ">
+                        <p>
+                            <i class="bi bi-file-person"></i> 
+                        </p>
+                        <p>
+                            <i class="bi bi-file-post"></i> @Model.Posts.Count Post paylaştı
+                        </p>
+                        <p>
+                            <i class="bi bi-chat-dots"></i> @Model.Comments.Count Yorum'da bulundu
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+
+            <div class="card shadow">
+                <div class="card-title"></div>
+                <div class="card-body">
+
+                    @foreach (var post in Model.Posts)
+                    {
+                        @if (post.IsActive == true)
+                        {
+
+                            <div class="card p-3">
+                                <a asp-action="Details" asp-controller="Posts" asp-route-url="@post.Url" class="text-decoration-none text-dark">
+
+                                    <div class="card-title pt-2 mx-1">
+                                        <h6 class="fw-bold"><i class="bi bi-postage"></i> @post.Title </h6>
+                                    </div>
+                                    <div class="card-body ">
+
+                                        <p>
+                                            @Html.Raw(@post.Content)
+                                        </p>
+                                        <div class="d-flex justify-content-end">
+                                            @post.PublishedOn.ToString("D")
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="col-lg-3">
+            @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.UserId.ToString())
+            {
+                <div class="container-fluid text-center mt-3">
+                    <h3><i class="bi bi-gear-fill"></i> Ayarlar</h3>
+                    <ul class="nav flex-column">
+                        <li class="nav-item border-bottom">
+                            <a class="nav-link" asp-route-userName="@Model.UserName" target="_top" onclick="openCenteredWindow('@Url.Action("EditProfile")',600,600)">Hesap Bilgileri</a>
+                        </li>
+
+                    </ul>
+                </div>
+            }
+
+        </div>
+    </div>
+
+
+
+</div>
+
+@section Scripts
+{
+    <script>
+        function openCenteredWindow(url,width,height) {
+            const left = (window.innerWidth - width) / 2;
+            const top = (window.innerHeight - height) / 2;
+            window.open(url, "_blank", `width=${width}, height=${height}, left=${left}, top=${top}`);
+        }
+    </script>
+
+}
+
+
+

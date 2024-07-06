@@ -1,0 +1,99 @@
+﻿@model PostViewModel
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Blog";
+}
+
+<div class="row">
+
+    <div class="col-lg-3">
+        <div>
+            <div class="text-center p-1">
+                <a asp-action="Create" asp-controller="Posts" class="btn btn-primary">Create New Article</a>
+            </div>
+            <div class="mb-3">
+                <vc:tag-menu></vc:tag-menu>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="bg-light p-4 post-section">
+            <h1 class="h4 mb-4">Popular Posts</h1>
+
+            <div class="row ">
+                @foreach (var post in Model.Posts)
+                {
+                    if (post.IsActive)
+                    {
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-transparent border-0 h-100 d-flex flex-column">
+                                <a class="m-0 p-0 text-decoration-none text-dark" asp-action="Details" asp-route-url="@post.Url">
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="image-container mb-3">
+                                            <img src="~/img/@post.Image" alt="@post.Content" class="img-fluid rounded" />
+                                        </div>
+                                        <h5 class="card-title">@post.Title</h5>
+                                        <p class="card-text flex-grow-1">@post.Description</p>
+                                        <div>
+                                            @foreach (var tag in post.Tags)
+                                            {
+                                                <a class="badge bg-danger bg-opacity-10 text-@tag.Color mb-2 fw-bold">@tag.Text</a>
+                                            }
+                                        </div>
+                                        <small class="fw-lighter" >@post.PublishedOn.ToString("M")</small>
+
+                                    </div>
+
+                                </a>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            @if (Model.Posts.Count > 3)
+            {
+                <div class="d-flex justify-content-center">
+                    <ul class="pagination">
+                        <li class="@(Model.PostInfo.CurrentPage == 1 ? "invisible" : "page-item page-link")">
+                            <a asp-action="Index" asp-route-page="@(Model.PostInfo.CurrentPage - 1)">Previous</a>
+                        </li>
+                        @for (int i = 1; i <= Model.PostInfo.TotalPages; i++)
+                        {
+                            <li class="page-item page-link">
+                                <a asp-action="Index" asp-route-page="@i">@i</a>
+                            </li>
+                        }
+                        <li class="@((Model.PostInfo.CurrentPage) == Model.PostInfo.TotalPages ? "invisible" : "page-item page-link")">
+                            <a asp-action="Index" asp-route-page="@(Model.PostInfo.CurrentPage + 1)">Next</a>
+                        </li>
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <div class="text-center p-1">
+                    <a asp-action="Create" asp-controller="Posts" class="link-offset-2 link-underline link-underline-opacity-25">
+                        <h6><i class="bi bi-plus-circle"></i> Bu konuda yazı yaz</h6>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div>
+            <form method="get" asp-action="Index" asp-controller="Posts">
+                <div class="d-flex gap-3 align-items-center">
+                    <input class="form-control" placeholder="Ara" name="val" />
+                    <button type="submit" class="btn btn-sm btn-primary">Ara</button>
+                </div>
+            </form>
+        </div>
+        <div>
+            <vc:latest-posts-menu></vc:latest-posts-menu>
+        </div>
+    </div>
+
+</div>
+

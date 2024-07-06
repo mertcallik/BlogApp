@@ -1,0 +1,65 @@
+﻿@model UserRegisterModel;
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Register";
+}
+@section Style
+{
+
+    .form{
+    -webkit-box-shadow:0px 0px 211px 102px rgba(3,83,180,1);
+    -moz-box-shadow: 0px 0px 211px 102px rgba(3,83,180,1);
+    box-shadow: 0px 0px 211px 102px rgba(3,83,180,1);
+    }
+    input{height:35px;
+    }
+    label{height:20px;}
+
+
+}
+
+
+<div class="container mt-5 pb-3">
+    <div class="row">
+
+
+        <h3 class="text-center">REGISTER</h3>
+        <div class="col-xl-6 d-flex mx-auto">
+            <div class="bg-light p-3 rounded-3xl border-1 w-100">
+                <form method="post" asp-action="Register">
+                    <div class="mb-2">
+                        <label class="form-label" asp-for="Name">Ad</label>
+                        <input class="form-control" asp-for="Name" placeholder="Jamie"/>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label" asp-for="SurName">Soyad</label>
+                        <input class="form-control" asp-for="SurName" placeholder="Josh"/>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label" asp-for="UserName">Kullanıcı Adı</label>
+                        <input class="form-control" asp-for="UserName" placeholder="Joshua" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label" asp-for="Email">Email</label>
+                        <input class="form-control" asp-for="Email" placeholder="gmail.com" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label" asp-for="Password">Şifre</label>
+                        <input class="form-control" asp-for="Password" placeholder="Password" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="PasswordConfirm" >Şifre Doğrulama</label>
+                        <input class="form-control" asp-for="PasswordConfirm" placeholder="Password Confirm"/>
+                    </div>
+                    <div class="mb-3 text-center">
+                        <button class="btn btn-outline-primary"  >Kayıt Ol</button>
+                    </div>
+                </form>
+                <div class="text-center text-danger" asp-validation-summary="All"></div>
+            </div>
+            
+
+        </div>
+
+    </div>
+</div>

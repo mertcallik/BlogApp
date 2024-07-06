@@ -1,0 +1,68 @@
+﻿@using System.Security.Claims
+@model List<Post>
+@{
+    Layout = "_Layout";
+    var role = User.FindFirstValue(ClaimTypes.Role);
+    
+}
+
+<div class="row">
+    <div>
+        <a class="btn btn-sm btn-primary fw-bolder" asp-controller="Posts" asp-action="Create">Yeni Post Ekle</a>
+    </div>
+    <div class="col-12">
+        <h2 class="text-center my-1 h2">Post List</h2>
+        <form asp-action="ListOfPosts" method="post">
+            
+            <table class="table table-bordered table-hover table-responsive">
+                <thead>
+                <tr>
+                    <th style="width: 200px;">Image</th>
+                    <th>Title</th>
+                    <th>IsActive</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @for (var i=0;i<Model.Count;i++)
+                {
+                    <input asp-for="@Model[i].PostId" type="hidden"/>
+                    <tr>
+                        <td><img class="img-fluid" src="/img/@Model[i].Image" alt="@Model[i].Title"></td>
+                        <td>@Html.DisplayFor(x => Model[i].Title)</td>
+                        <td>
+                            @if (role == "admin")
+                            {
+                                <select asp-for="@Model[i].IsActive" class="form-select">
+                                    <option value="@Model[i].IsActive">@Model[i].IsActive</option>
+                                    <option value="@(!Model[i].IsActive)">@(!Model[i].IsActive)</option>
+                                </select>
+                            }
+                            else
+                            {
+                                <p>@Model[i].IsActive</p>
+
+                            }
+                        </td>
+                        <th>
+                            <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-url="@Model[i].Url">Edit</a>
+                            <a class="btn btn-sm btn-danger" asp-action="Delete" asp-controller="Posts" asp-route-url="@Model[i].Url" >Delete</a>
+                        </th>
+                    </tr>
+                }
+
+                </tbody>
+            </table>
+
+            @if (role=="admin")
+            {
+                <div class="d-flex justify-content-center my-5">
+                    <button class="btn btn-primary">Hızlı Güncelle</button>
+                </div>
+            }
+
+        </form>
+
+        
+    </div>
+</div>

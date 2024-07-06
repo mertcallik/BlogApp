@@ -1,0 +1,20 @@
+﻿@model Post
+@{
+    Layout = "_Layout";
+}
+
+
+<div>
+    <p>@Model.Title 'i silmek istediğinize emin misini ?</p>
+
+    <form asp-action="Delete" asp-controller="Posts" method="post">
+        <div class="mb-3">
+            <input type="hidden" asp-for="Url" />
+            <button type="submit" class="btn btn-danger">Evet</button>
+            <a class="btn btn-primary" asp-action="ListOfPosts">Hayır</a>
+
+        </div>
+    </form>
+
+</div>
+

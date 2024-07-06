@@ -1,0 +1,43 @@
+﻿
+@{
+    Layout= "_Layout";
+}
+
+@section Style
+{
+    input {
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Resim için gölge */
+    img {
+    box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.1);
+    }
+    nav{
+    visibility: hidden;
+    }
+    footer{
+    visibility: hidden;
+    }
+}
+
+@section InHead
+{
+    <link href="/lib/izitoast/css/iziToast.min.css" rel="stylesheet" />
+}
+@section Scripts
+{
+    <script src="/lib/izitoast/js/iziToast.min.js"></script>
+    <script>
+        iziToast.success({
+            title: '',
+            message: 'Hesap bilgileriniz başarıyla güncellendi!',
+            Width: '1500px',
+        });
+        setTimeout(function() {
+            window.close();
+        }, 3000);
+    </script>
+}
